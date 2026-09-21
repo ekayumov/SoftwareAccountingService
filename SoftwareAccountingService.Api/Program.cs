@@ -1,4 +1,7 @@
 
+using Microsoft.EntityFrameworkCore;
+using SoftwareAccountingService.Api.Data;
+
 namespace SoftwareAccountingService.Api
 {
     public class Program
@@ -6,6 +9,14 @@ namespace SoftwareAccountingService.Api
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            var connectionString =
+                builder.Configuration.GetConnectionString("PostgreSql")
+                ?? throw new InvalidOperationException(
+                    "Connection string 'PostgreSql' was not found.");
+
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseNpgsql(connectionString));
 
             // Add services to the container.
 
