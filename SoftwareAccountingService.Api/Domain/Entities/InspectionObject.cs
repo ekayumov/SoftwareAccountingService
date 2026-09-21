@@ -4,7 +4,7 @@ namespace SoftwareAccountingService.Api.Domain.Entities
 {
     public class InspectionObject
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string Name { get; set; }
         public string Version { get; set; }
         public InspectionsType Type { get; set; }
