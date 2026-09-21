@@ -2,7 +2,7 @@
 {
     public enum InspectionsType
     {
-        SW = 1,  //— ПО
-        HSC = 2  //- ПАК
+        SW,  //— ПО
+        HSC  //- ПАК
     }
 }
