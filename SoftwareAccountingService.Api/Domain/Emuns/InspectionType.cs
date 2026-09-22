@@ -1,6 +1,6 @@
 ﻿namespace SoftwareAccountingService.Api.Domain.Emuns
 {
-    public enum InspectionsType
+    public enum InspectionType
     {
         SW,  //— ПО
         HSC  //- ПАК

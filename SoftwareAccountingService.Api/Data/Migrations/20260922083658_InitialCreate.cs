@@ -18,7 +18,7 @@ namespace SoftwareAccountingService.Api.Data.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     Version = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Type = table.Column<string>(type: "character varying(3)", maxLength: 3, nullable: false),
+                    Type = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
                     Result = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false, defaultValue: "InProgress"),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastUpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -28,6 +28,8 @@ namespace SoftwareAccountingService.Api.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_InspectionObjects", x => x.Id);
+                    table.CheckConstraint("CK_InspectionObjects_Result", "\"Result\" IN ('InProgress', 'Compliant', 'NonCompliant')");
+                    table.CheckConstraint("CK_InspectionObjects_Type", "\"Type\" IN ('SW', 'HSC')");
                 });
         }
 

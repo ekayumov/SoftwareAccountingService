@@ -1,6 +1,6 @@
 ﻿namespace SoftwareAccountingService.Api.Domain.Emuns
 {
-    public enum InspectionsResult
+    public enum InspectionResult
     {
         InProgress,
         Compliant,

@@ -56,8 +56,8 @@ namespace SoftwareAccountingService.Api.Data.Migrations
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasMaxLength(3)
-                        .HasColumnType("character varying(3)");
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<string>("Version")
                         .IsRequired()
@@ -66,7 +66,12 @@ namespace SoftwareAccountingService.Api.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("InspectionObjects");
+                    b.ToTable("InspectionObjects", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_InspectionObjects_Result", "\"Result\" IN ('InProgress', 'Compliant', 'NonCompliant')");
+
+                            t.HasCheckConstraint("CK_InspectionObjects_Type", "\"Type\" IN ('SW', 'HSC')");
+                        });
                 });
 #pragma warning restore 612, 618
         }

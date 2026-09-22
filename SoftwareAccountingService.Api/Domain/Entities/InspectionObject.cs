@@ -6,12 +6,16 @@ namespace SoftwareAccountingService.Api.Domain.Entities
     public class InspectionObject
     {
         public Guid Id { get; set; } = Guid.NewGuid();
+        
+        [Required]
         [MaxLength(200)]
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
+ 
+        [Required]
         [MaxLength(50)]
-        public string Version { get; set; }
-        public InspectionsType Type { get; set; }
-        public InspectionsResult Result { get; set; } = InspectionsResult.InProgress;
+        public string Version { get; set; } = "";
+        public InspectionType Type { get; set; }
+        public InspectionResult Result { get; set; } = InspectionResult.InProgress;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime LastUpdatedAt { get; set;} = DateTime.UtcNow;
         public DateTime ReceivedDate { get; set; }
