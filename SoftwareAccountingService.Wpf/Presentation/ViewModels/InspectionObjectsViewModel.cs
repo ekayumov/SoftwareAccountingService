@@ -1,24 +1,58 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using SoftwareAccountingService.Wpf.Presentation.Models;
+using SoftwareAccountingService.Wpf.Presentation.Models.Interfaces;
 using SoftwareAccountingService.Wpf.Presentation.Navigation;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Net.Http;
 
 namespace SoftwareAccountingService.Wpf.Presentation.ViewModels
 {
-    public class InspectionObjectsViewModel : ObservableObject, INavigationAware
+    public partial class InspectionObjectsViewModel :
+        ObservableObject,
+        INavigationAware
     {
+        private readonly IInspectionObjectsApiClient _apiClient;
         private readonly INavigationService _navigationService;
-        public InspectionObjectsViewModel(INavigationService navigationService)
+
+        [ObservableProperty]
+        private List<InspectionObjectModel> inspectionObjects = new();
+
+        [ObservableProperty]
+        private List<FilterOptionModel> typeOptions = new();
+
+        [ObservableProperty]
+        private List<FilterOptionModel> resultOptions = new();
+
+        [ObservableProperty]
+        private string? searchText;
+
+        [ObservableProperty]
+        private FilterOptionModel? selectedType;
+
+        [ObservableProperty]
+        private FilterOptionModel? selectedResult;
+
+        [ObservableProperty]
+        private string? errorMessage;
+
+        public InspectionObjectsViewModel(
+            IInspectionObjectsApiClient apiClient,
+            INavigationService navigationService)
         {
+            _apiClient = apiClient;
             _navigationService = navigationService;
         }
 
         public Task OnNavigatedToAsync(object? parameter)
         {
-            // Позже здесь загрузим список объектов через API.
-            return Task.CompletedTask;
+            return LoadDataAsync(loadFilters: true);
+        }
+
+        [RelayCommand]
+        private Task SearchAsync()
+        {
+            return LoadDataAsync(
+                loadFilters: TypeOptions.Count == 0);
         }
 
         [RelayCommand]
@@ -28,11 +62,79 @@ namespace SoftwareAccountingService.Wpf.Presentation.ViewModels
         }
 
         [RelayCommand]
-        private Task OpenEditFormAsync(
-            Guid inspectionObjectId)
+        private Task OpenEditFormAsync(Guid id)
         {
-            return _navigationService.NavigateToFormAsync(
-                inspectionObjectId);
+            return _navigationService.NavigateToFormAsync(id);
+        }
+
+        private async Task LoadDataAsync(bool loadFilters)
+        {
+            ErrorMessage = null;
+
+            try
+            {
+                if (loadFilters)
+                {
+                    await LoadFiltersAsync();
+                }
+
+                await LoadObjectsAsync();
+            }
+            catch (HttpRequestException)
+            {
+                ErrorMessage = "Не удалось подключиться к API.";
+            }
+            catch (TaskCanceledException)
+            {
+                ErrorMessage = "Сервер слишком долго не отвечает.";
+            }
+            catch (Exception exception)
+            {
+                ErrorMessage = exception.Message;
+            }
+        }
+
+        private async Task LoadFiltersAsync()
+        {
+            InspectionFilterOptionsModel filters =
+                await _apiClient.GetFilterOptionsAsync(
+                    CancellationToken.None);
+
+            TypeOptions = new List<FilterOptionModel>
+            {
+                new FilterOptionModel
+                {
+                    Code = string.Empty,
+                    DisplayName = "Все типы"
+                }
+            };
+
+            TypeOptions.AddRange(filters.Types);
+            SelectedType = TypeOptions[0];
+
+            ResultOptions = new List<FilterOptionModel>
+            {
+                new FilterOptionModel
+                {
+                    Code = string.Empty,
+                    DisplayName = "Все результаты"
+                }
+            };
+
+            ResultOptions.AddRange(filters.Results);
+            SelectedResult = ResultOptions[0];
+        }
+
+        private async Task LoadObjectsAsync()
+        {
+            IReadOnlyList<InspectionObjectModel> objects =
+                await _apiClient.GetAllAsync(
+                    SearchText,
+                    SelectedType?.Code,
+                    SelectedResult?.Code,
+                    CancellationToken.None);
+
+            InspectionObjects = objects.ToList();
         }
     }
 }

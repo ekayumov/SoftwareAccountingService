@@ -1,27 +1,19 @@
-﻿using SoftwareAccountingService.Wpf.Presentation.Views;
-using System.Text;
+﻿using SoftwareAccountingService.Wpf.Presentation.Navigation;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SoftwareAccountingService.Wpf
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow(InspectionObjectsPage inspectionObjectsPage)
+        public MainWindow(
+            NavigationService navigationService)
         {
             InitializeComponent();
 
-            MainFrame.Navigate(inspectionObjectsPage);
+            navigationService.Initialize(MainFrame);
+
+            Loaded += async (_, _) =>
+                await navigationService.NavigateToListAsync();
         }
     }
 }

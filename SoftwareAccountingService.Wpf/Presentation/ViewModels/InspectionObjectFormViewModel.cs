@@ -7,7 +7,7 @@ using System.Text;
 
 namespace SoftwareAccountingService.Wpf.Presentation.ViewModels
 {
-    public class InspectionObjectFormViewModel : ObservableObject, INavigationAware
+    public partial class InspectionObjectFormViewModel : ObservableObject, INavigationAware
     {
         private readonly INavigationService _navigationService;
 

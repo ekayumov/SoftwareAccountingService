@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SoftwareAccountingService.Wpf.Presentation.Navigation
 {
-    internal interface INavigationAware
+    public interface INavigationAware
     {
         Task OnNavigatedToAsync(object? parameter);
     }
