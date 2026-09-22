@@ -15,7 +15,7 @@ namespace SoftwareAccountingService.Api.Services
 
         Task<InspectionObjectDto> CreateAsync(CreateInspectionObjectDto dto, CancellationToken cancellationToken);
 
-        Task<InspectionObjectDto> UpdateResultAsync(Guid id, UpdateInspectionResultDto dto, CancellationToken cancellationToken);
+        Task<InspectionObjectDto?> UpdateResultAsync(Guid id, UpdateInspectionResultDto dto, CancellationToken cancellationToken);
 
         InspectionFilterOptionsDto GetFilterOptions();
     }

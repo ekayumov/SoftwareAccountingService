@@ -76,7 +76,7 @@ namespace SoftwareAccountingService.Api.Services
             if (result == null) { return null; }
 
             result.Result = dto.Result!.Value;
-            result.Note = dto.Note;
+            result.Note = NormalizeNote(dto.Note);
             result.LastUpdatedAt = currentDate;
 
             await _dbContext.SaveChangesAsync(cancellationToken);
@@ -105,8 +105,10 @@ namespace SoftwareAccountingService.Api.Services
                 Version = dto.Version.Trim(),
                 Type = dto.Type!.Value,
                 Result = InspectionResult.InProgress,
-                ReceivedDate = dto.ReceivedDate!.Value,
-                Note = dto.Note,
+                ReceivedDate = DateTime.SpecifyKind(
+                    dto.ReceivedDate!.Value.Date,
+                    DateTimeKind.Utc),
+                Note = NormalizeNote(dto.Note),
                 CreatedAt = currentDate,
                 LastUpdatedAt = currentDate
 
@@ -130,6 +132,13 @@ namespace SoftwareAccountingService.Api.Services
         public InspectionFilterOptionsDto GetFilterOptions()
         {
             return InspectionFilterOptionsFactory.Create();
+        }
+
+        private static string NormalizeNote(string? note)
+        {
+            return string.IsNullOrWhiteSpace(note)
+                ? string.Empty
+                : note.Trim();
         }
     }
 }

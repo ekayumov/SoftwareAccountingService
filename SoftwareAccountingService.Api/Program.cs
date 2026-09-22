@@ -16,15 +16,13 @@ namespace SoftwareAccountingService.Api
                 ?? throw new InvalidOperationException(
                     "Connection string 'PostgreSql' was not found.");
 
-            
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(connectionString));
 
-          
             builder.Services.AddScoped<
                 IInspectionObjectService,
                 InspectionObjectService>();
-           
+
             builder.Services
                 .AddControllers()
                 .AddJsonOptions(options =>

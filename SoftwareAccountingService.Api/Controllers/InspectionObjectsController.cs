@@ -29,9 +29,9 @@ namespace SoftwareAccountingService.Api.Controllers
             return Ok(inspectionObjects);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         public async Task<ActionResult<InspectionObjectDto>> GetById(
-            [FromQuery] Guid id,
+            [FromRoute] Guid id,
             CancellationToken cancellationToken)
         {
             InspectionObjectDto? inspectionObject =

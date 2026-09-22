@@ -1,0 +1,24 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: software-accounting-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: software_accounting
+      POSTGRES_USER: software_accounting
+      POSTGRES_PASSWORD: software_accounting_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - software-accounting-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U software_accounting -d software_accounting
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+
+volumes:
+  software-accounting-postgres-data:

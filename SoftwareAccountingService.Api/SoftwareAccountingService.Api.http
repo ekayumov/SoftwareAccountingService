@@ -1,6 +1,34 @@
 @SoftwareAccountingService.Api_HostAddress = http://localhost:5075
 
-GET {{SoftwareAccountingService.Api_HostAddress}}/weatherforecast/
+GET {{SoftwareAccountingService.Api_HostAddress}}/api/inspection-objects/filter-options
 Accept: application/json
 
 ###
+
+GET {{SoftwareAccountingService.Api_HostAddress}}/api/inspection-objects
+Accept: application/json
+
+###
+
+POST {{SoftwareAccountingService.Api_HostAddress}}/api/inspection-objects
+Content-Type: application/json
+
+{
+  "name": "Тестовый объект",
+  "version": "1.0.0",
+  "type": "SW",
+  "receivedDate": "2026-09-22T00:00:00Z",
+  "note": "Проверка связи WPF → API → PostgreSQL"
+}
+
+###
+
+@inspectionObjectId = 00000000-0000-0000-0000-000000000000
+
+PATCH {{SoftwareAccountingService.Api_HostAddress}}/api/inspection-objects/{{inspectionObjectId}}/result
+Content-Type: application/json
+
+{
+  "result": "Compliant",
+  "note": "Проверка завершена"
+}
