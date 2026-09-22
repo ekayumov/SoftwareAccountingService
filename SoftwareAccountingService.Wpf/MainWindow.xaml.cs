@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using SoftwareAccountingService.Wpf.Presentation.Views;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,11 +17,11 @@ namespace SoftwareAccountingService.Wpf
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(InspectionObjectsPage inspectionObjectsPage)
         {
             InitializeComponent();
 
-            MainFrame.NavigationService.Navigate(new Uri("Pages/InspectionObjectsPage.xaml", UriKind.Relative));
+            MainFrame.Navigate(inspectionObjectsPage);
         }
     }
 }
