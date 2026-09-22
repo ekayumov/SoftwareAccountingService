@@ -1,6 +1,7 @@
-
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using SoftwareAccountingService.Api.Data;
+using SoftwareAccountingService.Api.Services;
 
 namespace SoftwareAccountingService.Api
 {
@@ -10,23 +11,33 @@ namespace SoftwareAccountingService.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            var connectionString =
+            string connectionString =
                 builder.Configuration.GetConnectionString("PostgreSql")
                 ?? throw new InvalidOperationException(
                     "Connection string 'PostgreSql' was not found.");
 
+            
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(connectionString));
 
-            // Add services to the container.
+          
+            builder.Services.AddScoped<
+                IInspectionObjectService,
+                InspectionObjectService>();
+           
+            builder.Services
+                .AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(
+                        new JsonStringEnumConverter(
+                            allowIntegerValues: false));
+                });
 
-            builder.Services.AddControllers();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
@@ -35,7 +46,6 @@ namespace SoftwareAccountingService.Api
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
