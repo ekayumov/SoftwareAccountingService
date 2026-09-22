@@ -14,6 +14,7 @@ namespace SoftwareAccountingService.Api.DTO
         public string Version { get; set; } = string.Empty;
 
         [Required]
+        [EnumDataType(typeof(InspectionType))]
         public InspectionType? Type { get; set; }
 
         [Required]

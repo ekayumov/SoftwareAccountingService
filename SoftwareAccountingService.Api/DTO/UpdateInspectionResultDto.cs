@@ -6,6 +6,7 @@ namespace SoftwareAccountingService.Api.DTO
     public class UpdateInspectionResultDto
     {
         [Required]
+        [EnumDataType(typeof(InspectionResult))]
         public InspectionResult? Result { get; set; }
 
         [MaxLength(1000)]
