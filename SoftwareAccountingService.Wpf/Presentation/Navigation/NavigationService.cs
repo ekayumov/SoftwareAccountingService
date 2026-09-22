@@ -7,7 +7,7 @@ using System.Windows.Controls;
 
 namespace SoftwareAccountingService.Wpf.Presentation.Navigation
 {
-    internal class NavigationService
+    internal class NavigationService : INavigationService
     {
         private readonly IServiceProvider _serviceProvider; //провайдер
         private Frame? _frame; //фрейм для навигации

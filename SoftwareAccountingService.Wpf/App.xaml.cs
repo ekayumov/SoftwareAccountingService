@@ -1,35 +1,81 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using SoftwareAccountingService.Wpf.Infrastructure.Api;
+using SoftwareAccountingService.Wpf.Presentation.Models.Interfaces;
+using SoftwareAccountingService.Wpf.Presentation.Navigation;
 using SoftwareAccountingService.Wpf.Presentation.ViewModels;
 using SoftwareAccountingService.Wpf.Presentation.Views;
-using System.Configuration;
-using System.Data;
 using System.Windows;
 
 namespace SoftwareAccountingService.Wpf
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
         private ServiceProvider? _serviceProvider;
 
-        protected override void OnStartup(StartupEventArgs e)
+        protected override void OnStartup(
+            StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            IConfiguration configuration =
+                new ConfigurationBuilder()
+                    .SetBasePath(AppContext.BaseDirectory)
+                    .AddJsonFile(
+                        "appsettings.json",
+                        optional: false,
+                        reloadOnChange: false)
+                    .Build();
+
+            string apiBaseUrl =
+                configuration["Api:BaseUrl"]
+                ?? throw new InvalidOperationException(
+                    "Адрес API не найден в appsettings.json.");
+
+            apiBaseUrl =
+                apiBaseUrl.TrimEnd('/') + "/";
+
             var services = new ServiceCollection();
 
+            // Конфигурация приложения.
+            services.AddSingleton<IConfiguration>(
+                configuration);
+
+            // Навигация.
+            services.AddSingleton<NavigationService>();
+
+            services.AddSingleton<INavigationService>(
+                serviceProvider =>
+                    serviceProvider
+                        .GetRequiredService<NavigationService>());
+
+            // HTTP-клиент для обращения к API.
+            services.AddHttpClient<
+                IInspectionObjectsApiClient,
+                InspectionObjectsApiClient>(
+                    httpClient =>
+                    {
+                        httpClient.BaseAddress =
+                            new Uri(apiBaseUrl);
+
+                        httpClient.Timeout =
+                            TimeSpan.FromSeconds(30);
+                    });
+
+            services.AddSingleton<MainWindow>();
             services.AddTransient<InspectionObjectsPage>();
             services.AddTransient<InspectionObjectFormPage>();
-
             services.AddTransient<InspectionObjectsViewModel>();
             services.AddTransient<InspectionObjectFormViewModel>();
 
-            _serviceProvider = services.BuildServiceProvider();
+            _serviceProvider =
+                services.BuildServiceProvider();
 
-            var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+            MainWindow mainWindow =
+                _serviceProvider
+                    .GetRequiredService<MainWindow>();
+
             mainWindow.Show();
-
         }
 
         protected override void OnExit(
@@ -40,5 +86,4 @@ namespace SoftwareAccountingService.Wpf
             base.OnExit(e);
         }
     }
-
 }
