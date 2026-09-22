@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SoftwareAccountingService.Api.Domain.Emuns;
+using SoftwareAccountingService.Api.Domain.Enums;
 using SoftwareAccountingService.Api.Domain.Entities;
 
 namespace SoftwareAccountingService.Api.Data;

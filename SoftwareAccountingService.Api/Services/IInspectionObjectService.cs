@@ -1,4 +1,4 @@
-﻿using SoftwareAccountingService.Api.Domain.Emuns;
+﻿using SoftwareAccountingService.Api.Domain.Enums;
 using SoftwareAccountingService.Api.DTO;
 
 namespace SoftwareAccountingService.Api.Services

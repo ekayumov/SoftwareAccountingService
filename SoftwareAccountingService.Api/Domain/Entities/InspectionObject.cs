@@ -1,4 +1,4 @@
-﻿using SoftwareAccountingService.Api.Domain.Emuns;
+﻿using SoftwareAccountingService.Api.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace SoftwareAccountingService.Api.Domain.Entities

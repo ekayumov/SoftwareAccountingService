@@ -1,4 +1,4 @@
-﻿namespace SoftwareAccountingService.Api.Domain.Emuns
+﻿namespace SoftwareAccountingService.Api.Domain.Enums
 {
     public enum InspectionType
     {
