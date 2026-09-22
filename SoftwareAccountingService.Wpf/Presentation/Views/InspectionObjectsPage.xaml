@@ -1,108 +1,123 @@
-﻿<Page x:Class="SoftwareAccountingService.Wpf.Presentation.Views.InspectionObjectsPage"
+<Page x:Class="SoftwareAccountingService.Wpf.Presentation.Views.InspectionObjectsPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      Title="Объекты проверки">
+      Title="Объекты проверки"
+      Background="#F4F6F8">
 
     <Grid Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="15" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Grid Margin="0,0,0,15">
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <StackPanel Margin="0,0,10,0">
-                <TextBlock Text="Наименование"/>
-                <TextBox Text="{Binding SearchText,
-                                UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Text="Наименование"
+                           Margin="0,0,0,4" />
+                <TextBox Height="30"
+                         Padding="6,3"
+                         Text="{Binding SearchText,
+                                UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
 
             <StackPanel Grid.Column="1"
                         Margin="0,0,10,0">
-                <TextBlock Text="Тип"/>
-                <ComboBox ItemsSource="{Binding TypeOptions}"
+                <TextBlock Text="Тип"
+                           Margin="0,0,0,4" />
+                <ComboBox Height="30"
+                          ItemsSource="{Binding TypeOptions}"
                           SelectedItem="{Binding SelectedType}"
-                          DisplayMemberPath="DisplayName"/>
+                          DisplayMemberPath="DisplayName" />
             </StackPanel>
 
             <StackPanel Grid.Column="2"
                         Margin="0,0,10,0">
-                <TextBlock Text="Результат"/>
-                <ComboBox ItemsSource="{Binding ResultOptions}"
+                <TextBlock Text="Результат"
+                           Margin="0,0,0,4" />
+                <ComboBox Height="30"
+                          ItemsSource="{Binding ResultOptions}"
                           SelectedItem="{Binding SelectedResult}"
-                          DisplayMemberPath="DisplayName"/>
+                          DisplayMemberPath="DisplayName" />
             </StackPanel>
 
             <Button Grid.Column="3"
                     Content="Поиск"
                     Command="{Binding SearchCommand}"
-                    Margin="0,18,10,0"
-                    Padding="20,5"/>
+                    Margin="0,20,10,0"
+                    Padding="20,5" />
 
             <Button Grid.Column="4"
                     Content="Новый объект"
                     Command="{Binding OpenCreateFormCommand}"
-                    Margin="0,18,0,0"
-                    Padding="20,5"/>
+                    Margin="0,20,0,0"
+                    Padding="20,5" />
         </Grid>
 
-        <DataGrid Grid.Row="1"
+        <DataGrid Grid.Row="2"
                   ItemsSource="{Binding InspectionObjects}"
                   AutoGenerateColumns="False"
                   IsReadOnly="True"
-                  CanUserAddRows="False">
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  SelectionMode="Single"
+                  GridLinesVisibility="Horizontal"
+                  AlternatingRowBackground="#F8F8F8">
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Наименование"
                                     Binding="{Binding Name}"
-                                    Width="*"/>
+                                    Width="2*" />
 
                 <DataGridTextColumn Header="Версия"
                                     Binding="{Binding Version}"
-                                    Width="100"/>
+                                    Width="100" />
 
                 <DataGridTextColumn Header="Тип"
                                     Binding="{Binding Type}"
-                                    Width="100"/>
+                                    Width="100" />
 
                 <DataGridTextColumn Header="Дата получения"
                                     Binding="{Binding ReceivedDate,
                                               StringFormat=dd.MM.yyyy}"
-                                    Width="130"/>
+                                    Width="130" />
 
                 <DataGridTextColumn Header="Результат"
                                     Binding="{Binding Result}"
-                                    Width="140"/>
+                                    Width="140" />
 
                 <DataGridTextColumn Header="Примечание"
                                     Binding="{Binding Note}"
-                                    Width="*"/>
+                                    Width="2*" />
 
                 <DataGridTemplateColumn Header=""
                                         Width="120">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Content="Редактировать"
+                                    Padding="8,3"
                                     CommandParameter="{Binding Id}"
                                     Command="{Binding DataContext.OpenEditFormCommand,
-                                        RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                        RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
 
-        <TextBlock Grid.Row="2"
+        <TextBlock Grid.Row="3"
                    Text="{Binding ErrorMessage}"
-                   Foreground="Red"
-                   Margin="0,10,0,0"/>
+                   Foreground="DarkRed"
+                   TextWrapping="Wrap"
+                   Margin="0,10,0,0" />
     </Grid>
 </Page>

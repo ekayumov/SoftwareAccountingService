@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SoftwareAccountingService.Wpf.Presentation.Models.Interfaces
+﻿namespace SoftwareAccountingService.Wpf.Presentation.Models.Interfaces
 {
     public interface IInspectionObjectsApiClient
     {

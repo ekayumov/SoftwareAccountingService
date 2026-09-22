@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using SoftwareAccountingService.Wpf.Infrastructure.Api;
 using SoftwareAccountingService.Wpf.Presentation.Models;
 using SoftwareAccountingService.Wpf.Presentation.Models.Interfaces;
 using SoftwareAccountingService.Wpf.Presentation.Navigation;
@@ -80,17 +81,9 @@ namespace SoftwareAccountingService.Wpf.Presentation.ViewModels
 
                 await LoadObjectsAsync();
             }
-            catch (HttpRequestException)
-            {
-                ErrorMessage = "Не удалось подключиться к API.";
-            }
-            catch (TaskCanceledException)
-            {
-                ErrorMessage = "Сервер слишком долго не отвечает.";
-            }
             catch (Exception exception)
             {
-                ErrorMessage = exception.Message;
+                ErrorMessage = GetErrorMessage(exception);
             }
         }
 
@@ -102,7 +95,7 @@ namespace SoftwareAccountingService.Wpf.Presentation.ViewModels
 
             TypeOptions = new List<FilterOptionModel>
             {
-                new FilterOptionModel
+                new()
                 {
                     Code = string.Empty,
                     DisplayName = "Все типы"
@@ -114,7 +107,7 @@ namespace SoftwareAccountingService.Wpf.Presentation.ViewModels
 
             ResultOptions = new List<FilterOptionModel>
             {
-                new FilterOptionModel
+                new()
                 {
                     Code = string.Empty,
                     DisplayName = "Все результаты"
@@ -135,6 +128,20 @@ namespace SoftwareAccountingService.Wpf.Presentation.ViewModels
                     CancellationToken.None);
 
             InspectionObjects = objects.ToList();
+        }
+
+        private static string GetErrorMessage(
+            Exception exception)
+        {
+            return exception switch
+            {
+                ApiException apiException => apiException.Message,
+                HttpRequestException =>
+                    "Не удалось подключиться к API.",
+                TaskCanceledException =>
+                    "Сервер слишком долго не отвечает.",
+                _ => exception.Message
+            };
         }
     }
 }

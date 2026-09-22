@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SoftwareAccountingService.Wpf.Presentation.Models
+﻿namespace SoftwareAccountingService.Wpf.Presentation.Models
 {
     public sealed class FilterOptionModel
     {

@@ -1,16 +1,13 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SoftwareAccountingService.Wpf.Presentation.Views;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Controls;
 
 namespace SoftwareAccountingService.Wpf.Presentation.Navigation
 {
-    public class NavigationService : INavigationService
+    public sealed class NavigationService : INavigationService
     {
-        private readonly IServiceProvider _serviceProvider; //провайдер
-        private Frame? _frame; //фрейм для навигации
+        private readonly IServiceProvider _serviceProvider;
+        private Frame? _frame;
 
         public NavigationService(IServiceProvider serviceProvider)
         {
@@ -37,7 +34,7 @@ namespace SoftwareAccountingService.Wpf.Presentation.Navigation
         private async Task NavigateAsync<TPage>(object? parameter = null) where TPage : Page
         {
             if (_frame == null) { throw new InvalidOperationException("NavigationService is not initialized. Call Initialize() first."); }
-          
+
             TPage page = _serviceProvider.GetRequiredService<TPage>();
             _frame.Navigate(page);
 
@@ -47,6 +44,5 @@ namespace SoftwareAccountingService.Wpf.Presentation.Navigation
                     parameter);
             }
         }
-
     }
 }

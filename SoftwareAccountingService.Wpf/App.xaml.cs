@@ -37,19 +37,12 @@ namespace SoftwareAccountingService.Wpf
 
             var services = new ServiceCollection();
 
-            // Конфигурация приложения.
-            services.AddSingleton<IConfiguration>(
-                configuration);
-
-            // Навигация.
             services.AddSingleton<NavigationService>();
-
             services.AddSingleton<INavigationService>(
                 serviceProvider =>
                     serviceProvider
                         .GetRequiredService<NavigationService>());
 
-            // HTTP-клиент для обращения к API.
             services.AddHttpClient<
                 IInspectionObjectsApiClient,
                 InspectionObjectsApiClient>(
