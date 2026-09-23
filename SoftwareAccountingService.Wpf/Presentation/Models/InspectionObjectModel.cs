@@ -10,7 +10,11 @@
 
         public string Type { get; set; } = string.Empty;
 
+        public string TypeDisplayName { get; set; } = string.Empty;
+
         public string Result { get; set; } = string.Empty;
+
+        public string ResultDisplayName { get; set; } = string.Empty;
 
         public DateTime ReceivedDate { get; set; }
 

@@ -127,6 +127,23 @@ namespace SoftwareAccountingService.Wpf.Presentation.ViewModels
                     SelectedResult?.Code,
                     CancellationToken.None);
 
+            foreach (InspectionObjectModel inspectionObject in objects) // плохое решение, но думаю допустимое
+            {
+                inspectionObject.TypeDisplayName =
+                    TypeOptions
+                        .FirstOrDefault(option =>
+                            option.Code == inspectionObject.Type)
+                        ?.DisplayName
+                    ?? inspectionObject.Type;
+
+                inspectionObject.ResultDisplayName =
+                    ResultOptions
+                        .FirstOrDefault(option =>
+                            option.Code == inspectionObject.Result)
+                        ?.DisplayName
+                    ?? inspectionObject.Result;
+            }
+
             InspectionObjects = objects.ToList();
         }
 
