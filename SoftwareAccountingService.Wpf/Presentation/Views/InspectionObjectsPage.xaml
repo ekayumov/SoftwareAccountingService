@@ -83,7 +83,7 @@
                                     Width="100" />
 
                 <DataGridTextColumn Header="Тип"
-                                    Binding="{Binding Type}"
+                                    Binding="{Binding TypeDisplayName}"
                                     Width="100" />
 
                 <DataGridTextColumn Header="Дата получения"
@@ -92,7 +92,7 @@
                                     Width="130" />
 
                 <DataGridTextColumn Header="Результат"
-                                    Binding="{Binding Result}"
+                                    Binding="{Binding ResultDisplayName}"
                                     Width="140" />
 
                 <DataGridTextColumn Header="Примечание"
