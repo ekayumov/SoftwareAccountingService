@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="SoftwareAccountingService.Api.Tests/SoftwareAccountingService.Api.Tests.csproj" />
   <Project Path="SoftwareAccountingService.Api/SoftwareAccountingService.Api.csproj" />
   <Project Path="SoftwareAccountingService.Wpf/SoftwareAccountingService.Wpf.csproj" Id="711d5bc3-7f6d-40eb-a162-ab92bf58b369" />
 </Solution>
